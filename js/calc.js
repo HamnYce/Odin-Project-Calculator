@@ -1,8 +1,10 @@
-let buttons = document.querySelectorAll('.calc-button')
-let operators = document.querySelectorAll('.calc-operator')
-let allClearButton = document.querySelector('#allClearButton')
-let equalsButton = document.querySelector('#equalsButton')
+const buttons = document.querySelectorAll('.calc-button')
+const operators = document.querySelectorAll('.calc-operator')
+const allClearButton = document.querySelector('#allClearButton')
+const equalsButton = document.querySelector('#equalsButton')
 const display = document.querySelector("#calc-display");
+const negativeButton = document.querySelector("#negative-button")
+let firstNumber,currentOperator,secondNumber,total,clearTextFlag,reset;
 
 
 buttons.forEach(button => {
@@ -16,6 +18,8 @@ allClearButton.addEventListener('click',allClear)
 
 equalsButton.addEventListener('click',equals)
 
+negativeButton.addEventListener('click',negativise)
+
 
 function add(a,b) {console.log('add');return a+b};
 function subtract(a,b) {console.log('subtract');return a-b};
@@ -27,41 +31,40 @@ function divide(a,b) {console.log('div');
         return "~zzZZZzZ - Not Allowed~"
     }
     return a/b
-};
+}
+//extract if(reset) into function and pass to all functions as function
 
-
-let firstNumber,currentOperator,secondNumber,total,clearTextFlag,reset;
-
+function negativise() {
+    checkReset()
+    display.textContent = "-" + display.textContent;
+}
 
 function operate() {
-    if(reset) {
-        allClear()
-        reset=false;
-    }
+    checkReset()
     //if operator matches, carry out appropriate operation; update total, display total, reset operator.
     //only store second number if there is an operator already present. assumes there is 'x+' present
     if (currentOperator == "+") {
         secondNumber = Number(display.textContent);
         total = add(firstNumber,secondNumber)
-        display.textContent = total;
+        display.textContent = total.toString().substring(0,9);
         currentOperator = "";
     }
     else if (currentOperator == "-") {
         secondNumber = Number(display.textContent);
         total = subtract(firstNumber,secondNumber)
-        display.textContent = total;
+        display.textContent = total.toString().substring(0,9);
         currentOperator = "";
     }
     else if (currentOperator == "*") {
         secondNumber = Number(display.textContent);
         total = multiply(firstNumber,secondNumber)
-        display.textContent = total;
+        display.textContent = total.toString().substring(0,9);
         currentOperator = "";
     }
     else if (currentOperator == "/") {
         secondNumber = Number(display.textContent);
         total = divide(firstNumber,secondNumber)
-        display.textContent = total;
+        display.textContent = total.toString().substring(0,9);
         currentOperator = "";
     }
     //store first number (from display or 'total')
@@ -75,29 +78,26 @@ function operate() {
 }
 
 function equals() {
-    if (reset) {
-        allClear()
-        reset = false;
-    }
+    checkReset()
     if (currentOperator == "+") {
         secondNumber = Number(display.textContent);
         total = add(firstNumber,secondNumber)
-        display.textContent = total
+        display.textContent = total.toString().substring(0,9)
     }
     else if (currentOperator == "-") {
         secondNumber = Number(display.textContent);
         total = subtract(firstNumber,secondNumber)
-        display.textContent = total
+        display.textContent = total.toString().substring(0,9)
     }
     else if (currentOperator == "*") {
         secondNumber = Number(display.textContent);
         total = multiply(firstNumber,secondNumber)
-        display.textContent = total
+        display.textContent = total.toString().substring(0,9)
     }
     else if (currentOperator == "/") {
         secondNumber = Number(display.textContent);
         total = divide(firstNumber,secondNumber)
-        display.textContent = total
+        display.textContent = total.toString().substring(0,9)
     }
     currentOperator = "";
     clearTextFlag = true;
@@ -109,16 +109,21 @@ function allClear() {
     secondNumber = 0;
     total = 0;
     clearTextFlag = true;
+    currentOperator = ""
 }
 
 function textToDisplay() {
-    if (reset) {
-        allClear()
-        reset = false;
-    }
+    checkReset()
     if (clearTextFlag) {
         display.textContent = "";
         clearTextFlag = false;
     }
     display.textContent += this.textContent;
+}
+
+function checkReset() {
+    if (reset) {
+        allClear()
+        reset = false;
+    }
 }
