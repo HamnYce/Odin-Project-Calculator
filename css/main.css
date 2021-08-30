@@ -1,7 +1,6 @@
 #main {
     padding-top: 30px;
     padding-bottom: 30px;
-    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -10,7 +9,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
     height: 750px;
     border:1px solid black;
 }
@@ -34,6 +32,7 @@
 #calc-numbers-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 1fr;
 }
 
 #calc-operators-container {
@@ -41,10 +40,10 @@
 }
 
 
-.calc-button {
+.calc-input,.calc-clear {
     border:1px solid green;
     background-color: orange;
-    font-size: 3.5rem;
+    font-size: 3rem;
 }
 
 .calc-button:active {

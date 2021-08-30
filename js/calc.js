@@ -1,75 +1,124 @@
+let buttons = document.querySelectorAll('.calc-button')
+let operators = document.querySelectorAll('.calc-operator')
+let allClearButton = document.querySelector('#allClearButton')
+let equalsButton = document.querySelector('#equalsButton')
+const display = document.querySelector("#calc-display");
 
-(function() {
-    let buttons = document.querySelectorAll(".calc-input");
-    buttons.forEach(button => {
-        button.addEventListener('click',textToDisplay)
-    })
 
-    let clearButton = document.querySelector("#clearButton");
-    clearButton.addEventListener('click',clearDisplay)
+buttons.forEach(button => {
+    button.addEventListener('click',textToDisplay)
+})
+operators.forEach(operator => {
+    operator.addEventListener('click',operate)
+})
 
-    let operateButton = document.querySelector("#operateButton");
-    operateButton.addEventListener('click',operate)
-}) ()
+allClearButton.addEventListener('click',allClear)
 
-//immediately executing anonymous function surround in parangethsis 
-//and add parenthesis afterwards with args
-//(function() {}) ()
+equalsButton.addEventListener('click',equals)
 
-function add(a,b) {
-    return a+b;
-}
 
-function subtract(a,b) {
-    return a-b;
-}
-
-function multiply(a,b) {
-    return a*b;
-}
-
-function divide(a,b) {
-    if (b==0) {
-        return "Math Error - Cannot Divide by Zero"
+function add(a,b) {console.log('add');return a+b};
+function subtract(a,b) {console.log('subtract');return a-b};
+function multiply(a,b) {console.log('mult'); return a*b};
+function divide(a,b) {console.log('div');
+    if (b == 0) {
+        //flag to reset values and avoiding getting NaN
+        reset = true;
+        return "~zzZZZzZ - Not Allowed~"
     }
-    return a/b;
-}
+    return a/b
+};
+
+
+let firstNumber,currentOperator,secondNumber,total,clearTextFlag,reset;
+
 
 function operate() {
-    let display = document.querySelector("#calc-display");
-    let s = display.textContent;
-    let reg = new RegExp(/[+]|[-]|[*]|[/]/g);
-
-    let opIndex = s.search(reg)
-    let splitS = s.split(reg);
-
-    if (s[opIndex] == "+") {
-        display.textContent = add(Number(splitS[0]),Number(splitS[1]));
+    if(reset) {
+        allClear()
+        reset=false;
     }
-    else if (s[opIndex] == "-") {
-        display.textContent = subtract(Number(splitS[0]),Number(splitS[1]));
+    //if operator matches, carry out appropriate operation; update total, display total, reset operator.
+    //only store second number if there is an operator already present. assumes there is 'x+' present
+    if (currentOperator == "+") {
+        secondNumber = Number(display.textContent);
+        total = add(firstNumber,secondNumber)
+        display.textContent = total;
+        currentOperator = "";
     }
-    else if (s[opIndex] == "*") {
-        display.textContent = multiply(Number(splitS[0]),Number(splitS[1]));
+    else if (currentOperator == "-") {
+        secondNumber = Number(display.textContent);
+        total = subtract(firstNumber,secondNumber)
+        display.textContent = total;
+        currentOperator = "";
     }
-    else if (s[opIndex] == "/") {
-        display.textContent = divide(Number(splitS[0]),Number(splitS[1]));
+    else if (currentOperator == "*") {
+        secondNumber = Number(display.textContent);
+        total = multiply(firstNumber,secondNumber)
+        display.textContent = total;
+        currentOperator = "";
     }
+    else if (currentOperator == "/") {
+        secondNumber = Number(display.textContent);
+        total = divide(firstNumber,secondNumber)
+        display.textContent = total;
+        currentOperator = "";
+    }
+    //store first number (from display or 'total')
+    firstNumber = display.textContent == "" ? 0 : Number(display.textContent);
+    console.log(`first Number: ${firstNumber}`)
+    //store operator
+    currentOperator = this.textContent
+    console.log(`current OP: ${currentOperator}`)
+    console.log(`second Number: ${secondNumber}`)
+    clearTextFlag = true;
 }
 
-function textToDisplay(e) {
-    const display = document.querySelector("#calc-display");
-    const input = e.target.textContent;
-    display.textContent += input
-    
-    //concatenate this.textContent to Display.textContent
+function equals() {
+    if (reset) {
+        allClear()
+        reset = false;
+    }
+    if (currentOperator == "+") {
+        secondNumber = Number(display.textContent);
+        total = add(firstNumber,secondNumber)
+        display.textContent = total
+    }
+    else if (currentOperator == "-") {
+        secondNumber = Number(display.textContent);
+        total = subtract(firstNumber,secondNumber)
+        display.textContent = total
+    }
+    else if (currentOperator == "*") {
+        secondNumber = Number(display.textContent);
+        total = multiply(firstNumber,secondNumber)
+        display.textContent = total
+    }
+    else if (currentOperator == "/") {
+        secondNumber = Number(display.textContent);
+        total = divide(firstNumber,secondNumber)
+        display.textContent = total
+    }
+    currentOperator = "";
+    clearTextFlag = true;
+} 
+
+function allClear() {
+    display.textContent = 0;
+    firstNumber = 0;
+    secondNumber = 0;
+    total = 0;
+    clearTextFlag = true;
 }
 
-function clearDisplay() {
-    let display = document.querySelector("#calc-display");
-    display.textContent = "";
+function textToDisplay() {
+    if (reset) {
+        allClear()
+        reset = false;
+    }
+    if (clearTextFlag) {
+        display.textContent = "";
+        clearTextFlag = false;
+    }
+    display.textContent += this.textContent;
 }
-
-
-//make it so that everytime an operator is clicked it calculates that step before adding the plus
-//check if there is 2 operators present at the same time and if there is operate then add that operator
