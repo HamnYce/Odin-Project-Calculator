@@ -23,13 +23,39 @@ let firstNumber,currentOperator,secondNumber,total,clearTextFlag = true,reset;
     negativeButton.addEventListener('click',negativise)
     
     decimalButton.addEventListener('click',addDecimalPoint)
+
+    window.addEventListener('keydown',keyboardToDisplay)
 }) ()
 
 
+function keyboardToDisplay(e) {
+    let charCode = e.keyCode
+    let char = e.key
 
-function add(a,b) {;return a+b};
-function subtract(a,b) {;return a-b};
-function multiply(a,b) {; return a*b};
+    if (charCode >= 48 && charCode <= 57) {
+        textToDisplay(null,e.key)
+    }
+    else if (charCode == 65 || charCode == 67) {
+        allClear()
+    }
+    else if (charCode == 8) {
+        deleteContent()
+    }
+    //using key instead of keyCode because + and = have same keycode
+    else if (char == "+" || char == "-" || char == "*" || char == "/") {
+        operate(null,char)
+    }
+    else if (char == "=") {
+        equals()
+    }
+    else if (charCode == 190) {
+        addDecimalPoint()
+    }
+}
+
+function add(a,b) {return a+b};
+function subtract(a,b) {return a-b};
+function multiply(a,b) {return a*b};
 function divide(a,b) {
     if (b == 0) {
         //flag to reset values and avoiding getting NaN
@@ -38,22 +64,22 @@ function divide(a,b) {
     }
     return a/b
 }
-//extract if(reset) into function and pass to all functions as function
+
 
 function negativise() {
     checkReset()
-    if(display.textContent.charAt(0) != "-") {
+    if(display.textContent.charAt(0) != "-" && display.textContent.length < 9) {
         display.textContent = "-" + display.textContent;
     }
-    else {
+    else if (display.textContent.indexOf("-") != -1){
         display.textContent = display.textContent.substr(1)
     }
 }
 
-function operate() {
+function operate(e,o) {
     checkReset()
     //if operator matches, carry out appropriate operation; update total, display total, reset operator.
-    //only store second number if there is an operator already present. assumes there is 'x+' present
+    //only store second number if there is an operator already present. assumes x+y where y is missing
     if (currentOperator == "+") {
         secondNumber = Number(display.textContent);
         total = add(firstNumber,secondNumber)
@@ -85,7 +111,12 @@ function operate() {
     //store first number (from display or 'total')
     firstNumber = display.textContent == "" ? 0 : Number(display.textContent);
     //store operator
-    currentOperator = this.textContent
+    if (o == undefined) {
+        currentOperator = this.textContent
+    }
+    else {
+        currentOperator = o;
+    }
     clearTextFlag = true;
 }
 
@@ -128,16 +159,18 @@ function allClear() {
     currentOperator = "";
 }
 
-function textToDisplay() {
-    //division by 0 removal
+function textToDisplay(e,s) {
+    //division-by-0 string removal
     checkReset()
-
+    if (s == undefined) {
+        s = this.textContent;
+    }
     //remove numbers after operator has been presed to start 'fresh'
     if (clearTextFlag) {
         display.textContent = "";
         clearTextFlag = false;
     }
-    display.textContent += this.textContent;
+    display.textContent += s;
     display.textContent = display.textContent.substring(0,9);
 }
 
@@ -156,7 +189,7 @@ function checkSize() {
         reset = true;
     }
 }
-
+//should i add an option to remove the decimal point once placed? all it would take is an if statement or 2 like negativise() hmm
 function addDecimalPoint() {
     if (checkReset()) {
         clearTextFlag = false;
@@ -167,6 +200,7 @@ function addDecimalPoint() {
 }
 
 function roundNumber(n) {
+    //for divison by 0
     if(typeof n == "string") {
         return n
     }
@@ -178,7 +212,11 @@ function roundNumber(n) {
     n = Math.round(n)
     n = n/(Math.pow(10,power))
 
-
     return n
 }
 
+function deleteContent() {
+    s = display.textContent.toString().trim()
+    s = s.substring(0,s.length-1)
+    display.textContent = s
+}
