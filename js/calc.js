@@ -1,14 +1,14 @@
-const buttons = document.querySelectorAll('.calc-button')
-const operators = document.querySelectorAll('.calc-operator')
-const allClearButton = document.querySelector('#allClearButton')
-const equalsButton = document.querySelector('#equalsButton')
 const display = document.querySelector("#calc-display");
-const negativeButton = document.querySelector("#negative-button")
-const decimalButton = document.querySelector("#decimal-button")
-
 let firstNumber,currentOperator,secondNumber,total,clearTextFlag = true,reset;
 
 (function() {
+    const buttons = document.querySelectorAll('.calc-button')
+    const operators = document.querySelectorAll('.calc-operator')
+    const allClearButton = document.querySelector('#allClearButton')
+    const equalsButton = document.querySelector('#equalsButton')
+    const negativeButton = document.querySelector("#negative-button")
+    const decimalButton = document.querySelector("#decimal-button")
+    const Browser = window
     buttons.forEach(button => {
         button.addEventListener('click',textToDisplay)
     })
@@ -24,7 +24,7 @@ let firstNumber,currentOperator,secondNumber,total,clearTextFlag = true,reset;
     
     decimalButton.addEventListener('click',addDecimalPoint)
 
-    window.addEventListener('keydown',keyboardToDisplay)
+    Browser.addEventListener('keydown',keyboardToDisplay)
 }) ()
 
 
@@ -45,7 +45,7 @@ function keyboardToDisplay(e) {
     else if (char == "+" || char == "-" || char == "*" || char == "/") {
         operate(null,char)
     }
-    else if (char == "=") {
+    else if (char == "=" || charCode == 13) {
         equals()
     }
     else if (charCode == 190) {
@@ -185,7 +185,7 @@ function checkReset() {
 
 function checkSize() {
     if (display.textContent.trim().length >= 10 ) {
-        display.textContent = "Size Error";
+        display.textContent = "Size Err";
         reset = true;
     }
 }
@@ -216,7 +216,7 @@ function roundNumber(n) {
 }
 
 function deleteContent() {
-    s = display.textContent.toString().trim()
+    let s = display.textContent.toString().trim()
     s = s.substring(0,s.length-1)
     display.textContent = s
 }
