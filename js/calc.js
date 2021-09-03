@@ -6,7 +6,7 @@ let firstNumber,currentOperator,secondNumber,total,clearTextFlag = true,reset;
     const operators = document.querySelectorAll('.calc-operator')
     const allClearButton = document.querySelector('#allClearButton')
     const equalsButton = document.querySelector('#equalsButton')
-    const negativeButton = document.querySelector("#negative-button")
+    const negativeButton = document.querySelector("#negativeButton")
     const decimalButton = document.querySelector("#decimal-button")
     const Browser = window
     buttons.forEach(button => {
@@ -32,8 +32,8 @@ function keyboardToDisplay(e) {
     let charCode = e.keyCode
     let char = e.key
 
-    if (charCode >= 48 && charCode <= 57) {
-        textToDisplay(null,e.key)
+    if (char >= "0" && char <= "9") {
+        textToDisplay(null,char)
     }
     else if (charCode == 65 || charCode == 67) {
         allClear()
@@ -41,7 +41,7 @@ function keyboardToDisplay(e) {
     else if (charCode == 8) {
         deleteContent()
     }
-    //using key instead of keyCode because + and = have same keycode
+    //using key instead of keyCode because + and = have same keycode (same with above '8' & '*')
     else if (char == "+" || char == "-" || char == "*" || char == "/") {
         operate(null,char)
     }
@@ -189,7 +189,7 @@ function checkSize() {
         reset = true;
     }
 }
-//should i add an option to remove the decimal point once placed? all it would take is an if statement or 2 like negativise() hmm
+
 function addDecimalPoint() {
     if (checkReset()) {
         clearTextFlag = false;

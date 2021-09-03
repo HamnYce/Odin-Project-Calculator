@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: rgb(156, 156, 185);
+    background-color: #0e3247;
 }
 
 #main {
@@ -21,7 +21,7 @@ body {
     flex-direction: column;
     align-items: center;
     height: 490px;
-    border:4px solid rgb(30, 30, 30);
+    border: 5px solid #efd6ac;
     border-radius: 1%;
 }
 
@@ -38,8 +38,8 @@ body {
 }
 
 #calc-body {
-    border-top: 4px solid rgb(30, 30, 30);
-    background-color: rgb(255, 166, 0);
+    border-top: 6px solid rgb(30, 30, 30);
+    background-color: #c44900;
     height: 82%;
     width: 100%;
     display: grid;
@@ -50,27 +50,38 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-auto-rows: 1fr;
+    column-gap: -2;
+}
+
+.calc-input,.calc-clear {
+    border: 0;
+    border-right: 2px solid rgb(30, 30, 30);
+    border-bottom: 2px solid rgb(30, 30, 30);
+    background-color: #c44900;
+    font-size: 3rem;
 }
 
 #calc-operators-container {
     display: grid;
 }
-
-
-.calc-input,.calc-clear {
-    
-    border: 0;
-    border-right: 2px solid rgb(30, 30, 30);
-    border-bottom: 2px solid rgb(30, 30, 30);
-    background-color: orange;
-    font-size: 3rem;
+.operator-color {
+    background-color: #183a37;
 }
 
-.calc-input:hover {
-    background: cornflowerblue;
+#negativeButton {
+    background-color: #75405b;
 }
-.calc-input:active {
-    background-color: darkorange;
+#equalsButton {
+    background-color: #efd6ac;
+}
+#allClearButton {
+    background-color: #2b682d;
+}
+.calc-input:hover,#negativeButton:hover,#equalsButton:hover,#allClearButton:hover {
+    background: rgb(63, 94, 151);
+}
+.calc-input:active,.operator-color:active,#equalsButton:active,#negativeButton:active {
+    background-color: rgb(223, 203, 179);
     color:black;
 }
 
