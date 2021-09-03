@@ -64,24 +64,17 @@ body {
 #calc-operators-container {
     display: grid;
 }
-.operator-color {
-    background-color: #183a37;
+.operator-color,#equalsButton {
+    background-color: #57a381;
 }
-
 #negativeButton {
     background-color: #75405b;
-}
-#equalsButton {
-    background-color: #efd6ac;
-}
-#allClearButton {
-    background-color: #2b682d;
 }
 .calc-input:hover,#negativeButton:hover,#equalsButton:hover,#allClearButton:hover {
     background: rgb(63, 94, 151);
 }
 .calc-input:active,.operator-color:active,#equalsButton:active,#negativeButton:active {
-    background-color: rgb(223, 203, 179);
+    background-color: rgb(47, 71, 116);
     color:black;
 }
 
